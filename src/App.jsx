@@ -82,6 +82,12 @@ function AppMain() {
 
   useEffect(() => {
     AudioManager.unlockAudioOnClick();
+
+    // Initialize night mode from localStorage
+    const nightMode = localStorage.getItem('nightMode') === 'true';
+    if (nightMode) {
+      document.documentElement.classList.add('night-mode');
+    }
   }, []);
 
   // -------------------------------
@@ -96,9 +102,22 @@ function AppMain() {
           <h1>🚗 V2V SafeNet</h1>
           <p className="subtitle">Real-Time Collision Warning System</p>
         </div>
-        <div className="vehicle-id">
-          <span>Vehicle ID:</span>
-          <strong>{vehicleId.substring(0, 12)}...</strong>
+        <div className="header-controls">
+          <button
+            className="night-mode-toggle"
+            onClick={() => {
+              const html = document.documentElement;
+              const isDark = html.classList.toggle('night-mode');
+              localStorage.setItem('nightMode', isDark);
+            }}
+            title="Toggle Night Mode"
+          >
+            {document.documentElement.classList.contains('night-mode') ? '☀️' : '🌙'}
+          </button>
+          <div className="vehicle-id">
+            <span>Vehicle ID:</span>
+            <strong>{vehicleId.substring(0, 12)}...</strong>
+          </div>
         </div>
       </header>
 

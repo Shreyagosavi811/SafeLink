@@ -12,6 +12,10 @@ A lightweight vehicle-to-vehicle (V2V) communication system that provides real-t
 - ✅ **Brake Alert System** - Detects and broadcasts sudden braking events
 - ✅ **Interactive Map** - Color-coded vehicle markers (Blue/Orange/Red) based on risk level
 - ✅ **Visual Alerts** - Popup warnings with blinking animations for high-risk scenarios
+- ✅ **Voice Alerts** - 🆕 Speech synthesis for hands-free warnings
+- ✅ **Vibration Feedback** - 🆕 Haptic alerts for mobile devices
+- ✅ **Night Mode** - 🆕 Dark theme for nighttime driving
+- ✅ **Stale Vehicle Cleanup** - 🆕 Automatic removal of disconnected vehicles
 - ✅ **Modern UI** - Glassmorphism design with smooth animations
 - ✅ **Multi-Device Support** - Works on desktop and mobile browsers
 

@@ -164,7 +164,20 @@ export function useVehiclesData() {
         // Subscribe to vehicles data
         onValue(vehiclesRef, (snapshot) => {
             const data = snapshot.val();
-            setVehicles(data || {});
+
+            // Filter out stale vehicles (no update in 10 seconds)
+            const now = Date.now();
+            const activeVehicles = {};
+
+            if (data) {
+                Object.entries(data).forEach(([id, vehicle]) => {
+                    if (vehicle.timestamp && (now - vehicle.timestamp) < 10000) {
+                        activeVehicles[id] = vehicle;
+                    }
+                });
+            }
+
+            setVehicles(activeVehicles);
             setLoading(false);
         });
 
