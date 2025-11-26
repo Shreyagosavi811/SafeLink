@@ -20,9 +20,6 @@ import './App.css';
 import 'leaflet/dist/leaflet.css';
 
 function AppMain() {
-  // -------------------------------
-  // 1️⃣ GENERATE OR LOAD UNIQUE VEHICLE ID
-  // -------------------------------
   const [vehicleId] = useState(() => {
     let id = localStorage.getItem('vehicleId');
     if (!id) {
@@ -32,14 +29,7 @@ function AppMain() {
     return id;
   });
 
-  // -------------------------------
-  // 2️⃣ LIVE GPS TRACKING
-  // -------------------------------
   const { position, speed, heading, error, isTracking } = useVehicleTracking(vehicleId);
-
-  // -------------------------------
-  // 3️⃣ FETCH ALL VEHICLE DATA FROM FIREBASE
-  // -------------------------------
   const { vehicles } = useVehiclesData();
 
   const otherVehicles = useMemo(() => {
@@ -48,9 +38,6 @@ function AppMain() {
     return filtered;
   }, [vehicles, vehicleId]);
 
-  // -------------------------------
-  // 4️⃣ CURRENT VEHICLE OBJECT
-  // -------------------------------
   const currentVehicle = useMemo(() => {
     if (!position) return null;
     return {
@@ -62,9 +49,6 @@ function AppMain() {
     };
   }, [position, speed, heading, vehicleId]);
 
-  // -------------------------------
-  // 5️⃣ COLLISION ANALYSIS
-  // -------------------------------
   const collisionRisks = useMemo(() => {
     if (!currentVehicle) return [];
     return analyzeAllCollisionRisks(currentVehicle, otherVehicles);
@@ -90,18 +74,17 @@ function AppMain() {
     }
   }, []);
 
-  // -------------------------------
-  // 6️⃣ RENDER
-  // -------------------------------
   return (
     <div className="app">
-
-      {/* HEADER */}
       <header className="app-header">
-        <div>
-          <h1>🚗 V2V SafeNet</h1>
-          <p className="subtitle">Real-Time Collision Warning System</p>
+        <div className="header-brand">
+          <div className="logo-icon">🛡️</div>
+          <div>
+            <h1>SafeLink</h1>
+            <p className="subtitle">V2V Collision Warning System</p>
+          </div>
         </div>
+
         <div className="header-controls">
           <button
             className="night-mode-toggle"
@@ -115,28 +98,23 @@ function AppMain() {
             {document.documentElement.classList.contains('night-mode') ? '☀️' : '🌙'}
           </button>
           <div className="vehicle-id">
-            <span>Vehicle ID:</span>
-            <strong>{vehicleId.substring(0, 12)}...</strong>
+            <span>ID:</span>
+            <strong>{vehicleId.substring(0, 8)}...</strong>
           </div>
         </div>
       </header>
 
-      {/* NAVIGATION */}
       <nav className="app-nav">
-        <Link to="/">Dashboard</Link> |{" "}
-        <Link to="/simulator">Simulator</Link> |{" "}
-        <Link to="/v2v">V2V Communication</Link>
+        <Link to="/" className="nav-link">Dashboard</Link>
+        <Link to="/simulator" className="nav-link">Simulator</Link>
+        <Link to="/v2v" className="nav-link">V2V Network</Link>
       </nav>
 
-      {/* ROUTES */}
       <Routes>
-        {/* HOME MAP DASHBOARD */}
         <Route
           path="/"
           element={
             <div className="app-content">
-
-              {/* LEFT PANEL */}
               <aside className="info-sidebar">
                 <VehicleInfoPanel
                   currentSpeed={speed}
@@ -147,23 +125,20 @@ function AppMain() {
                 />
 
                 <div className="instructions-panel">
-                  <h3>📱 How to Test</h3>
+                  <h3>📱 Quick Start</h3>
                   <ol>
-                    <li>Open on two mobile devices</li>
-                    <li>Enable GPS on both</li>
-                    <li>Start moving</li>
-                    <li>Alerts trigger automatically</li>
+                    <li>Open on 2+ devices</li>
+                    <li>Enable GPS</li>
+                    <li>Move to test alerts</li>
                   </ol>
                 </div>
               </aside>
 
-              {/* MAP + ALERTS */}
               <main className="map-container">
-
                 {!position && !error && (
                   <div className="loading-banner">
                     <div className="spinner"></div>
-                    Waiting for GPS...
+                    Waiting for GPS signal...
                   </div>
                 )}
 
@@ -186,40 +161,38 @@ function AppMain() {
                 )}
 
                 {!position && !error && (
-                  <div style={{ textAlign: "center", paddingTop: "80px", opacity: 0.6 }}>
+                  <div className="map-placeholder">
                     Map will load once GPS is active…
                   </div>
                 )}
-
               </main>
             </div>
           }
         />
 
-        {/* SIMULATOR PAGE */}
         <Route path="/simulator" element={<SimulatorPage />} />
-
-        {/* V2V COMMUNICATION SCREEN */}
         <Route path="/v2v" element={<V2VPanel vehicles={vehicles} currentId={vehicleId} />} />
       </Routes>
 
-      {/* FOOTER */}
       <footer className="app-footer">
-        <span>🌐 Connected: {Object.keys(vehicles).length}</span>
-        <span>📡 Tracking: {isTracking ? "Active" : "Inactive"}</span>
-        <span>
-          ⚡ Risk:
+        <div className="footer-stat">
+          <span>🌐 Connected</span>
+          <strong>{Object.keys(vehicles).length}</strong>
+        </div>
+        <div className="footer-stat">
+          <span>📡 Tracking</span>
+          <strong>{isTracking ? "Active" : "Inactive"}</strong>
+        </div>
+        <div className="footer-stat">
+          <span>⚡ Risk Level</span>
           <strong style={{
-            color:
-              overallRiskLevel === "HIGH" ? "#FF4444" :
-                overallRiskLevel === "MEDIUM" ? "#FFA500" :
-                  "#4CAF50"
+            color: overallRiskLevel === "HIGH" ? "#FF4444" :
+              overallRiskLevel === "MEDIUM" ? "#FFA500" : "#4CAF50"
           }}>
-            {" "}{overallRiskLevel}
+            {overallRiskLevel}
           </strong>
-        </span>
+        </div>
       </footer>
-
     </div>
   );
 }

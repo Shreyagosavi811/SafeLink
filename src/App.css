@@ -13,9 +13,10 @@ body {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
-  background: #1e1e2e;
+  background: var(--bg-primary, #ffffff);
+  color: var(--text-primary, #213547);
   font-family: "Inter", system-ui, sans-serif;
-  color: white;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 /* The main wrapper */
@@ -32,36 +33,66 @@ body {
 
 .app-header {
   width: 100%;
-  padding: 20px 40px;
-  background: rgba(30, 30, 40, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-
+  padding: 16px 32px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   position: sticky;
   top: 0;
   z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  font-size: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .app-header h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 24px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
 }
 
 .subtitle {
-  font-size: 14px;
-  opacity: 0.75;
+  font-size: 13px;
+  opacity: 0.6;
+  font-weight: 500;
+  margin-top: -2px;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .vehicle-id {
-  font-size: 14px;
+  font-size: 13px;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 6px 12px;
+  border-radius: 20px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
 }
 
 .vehicle-id strong {
-  color: #6ab8ff;
+  color: #4F46E5;
+  font-family: monospace;
 }
 
 /* -----------------------------------------------------
@@ -70,73 +101,107 @@ body {
 
 .app-nav {
   width: 100%;
-  padding: 12px 30px;
-  background: rgba(40, 40, 55, 0.8);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  text-align: center;
+  padding: 0 32px;
+  background: var(--bg-primary);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: center;
+  gap: 8px;
 }
 
-.app-nav a {
-  color: #7aa2ff;
+.nav-link {
+  color: var(--text-primary);
   text-decoration: none;
   font-weight: 500;
-  margin: 0 10px;
+  font-size: 14px;
+  padding: 12px 20px;
+  border-bottom: 2px solid transparent;
+  opacity: 0.6;
+  transition: all 0.2s;
 }
 
-.app-nav a:hover {
-  color: #a3c4ff;
+.nav-link:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.nav-link.active {
+  /* React Router adds 'active' class automatically if using NavLink, but we used Link. Assuming user might switch or just hover styles for now */
+  opacity: 1;
+  border-bottom-color: #4F46E5;
+  color: #4F46E5;
 }
 
 /* -----------------------------------------------------
-   MAIN CONTENT LAYOUT (MAP + SIDEBAR)
+   MAIN CONTENT LAYOUT
 ----------------------------------------------------- */
 
 .app-content {
   flex: 1;
   display: grid;
-  grid-template-columns: 500px 650px;
-  padding: 20px;
-  gap: 20px;
+  grid-template-columns: 380px 1fr;
+  padding: 24px;
+  gap: 24px;
   width: 100%;
-  overflow: hidden;
-  height: calc(100vh - 180px);
+  max-width: 1600px;
+  margin: 0 auto;
+  height: calc(100vh - 130px);
 }
 
+.info-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+.map-container {
+  background: #e5e7eb;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
 
 /* -----------------------------------------------------
-   GPS STATUS BANNERS
+   BANNERS & SPINNERS
 ----------------------------------------------------- */
 
 .loading-banner,
 .error-banner {
   position: absolute;
-  top: 15px;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 10px 20px;
-  border-radius: 10px;
-  z-index: 20;
+  padding: 12px 24px;
+  border-radius: 12px;
+  z-index: 1000;
   font-weight: 600;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .loading-banner {
-  background: #3a3a5e;
+  background: rgba(255, 255, 255, 0.9);
+  color: #4F46E5;
+  backdrop-filter: blur(8px);
 }
 
 .error-banner {
-  background: #ff3d3d;
+  background: #EF4444;
+  color: white;
 }
 
 .spinner {
-  width: 12px;
-  height: 12px;
-  border: 3px solid white;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;
-  display: inline-block;
-  margin-right: 8px;
-  animation: spin 1s linear infinite;
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
@@ -145,55 +210,79 @@ body {
   }
 }
 
+.map-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #6B7280;
+  font-weight: 500;
+}
+
 /* -----------------------------------------------------
    FOOTER
 ----------------------------------------------------- */
 
 .app-footer {
   width: 100%;
-  padding: 15px 40px;
-  background: rgba(30, 30, 40, 0.95);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-
+  padding: 12px 32px;
+  background: var(--bg-primary);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  font-size: 13px;
+}
 
-  font-size: 14px;
+.footer-stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.8;
 }
 
 /* -----------------------------------------------------
-   RESPONSIVE FIXES
+   RESPONSIVE
 ----------------------------------------------------- */
 
 @media (max-width: 1024px) {
   .app-content {
     grid-template-columns: 1fr;
     height: auto;
+    padding: 16px;
   }
 
   .map-container {
-    height: 420px;
+    height: 500px;
+    order: -1;
+    /* Map first on mobile */
   }
 }
 
 @media (max-width: 600px) {
   .app-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+    padding: 12px 16px;
+  }
+
+  .header-brand h1 {
+    font-size: 20px;
   }
 
   .app-nav {
-    font-size: 15px;
+    padding: 0;
+    overflow-x: auto;
+    justify-content: flex-start;
   }
 
-  .app-content {
-    padding: 10px;
+  .nav-link {
+    padding: 12px 16px;
+    white-space: nowrap;
   }
 
-  .map-container {
-    height: 350px;
+  .app-footer {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding-bottom: 20px;
   }
 }
