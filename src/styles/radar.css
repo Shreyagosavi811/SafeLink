@@ -1,0 +1,40 @@
+/* src/styles/radar.css */
+
+.radar-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* optional top-right legend container if you want to overlay icons there */
+.radar-legend {
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    z-index: 3500;
+    background: rgba(10, 20, 30, 0.6);
+    color: #dfffe0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* flash overlay (HIGH risk) */
+.radar-flash {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 68, 68, 0.45);
+    pointer-events: none;
+    z-index: 9000;
+    animation: radarFlash 0.35s ease-out;
+}
+
+@keyframes radarFlash {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}

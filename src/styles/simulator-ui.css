@@ -1,0 +1,261 @@
+/* --- ROOT LAYOUT --- */
+.sim-root {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background: #111827;
+    /* Dark background */
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    color: #e5e7eb;
+}
+
+/* --- SIDEBAR --- */
+.sim-sidebar {
+    width: 320px;
+    background: rgba(17, 24, 39, 0.95);
+    /* Darker for contrast */
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 20px;
+}
+
+.sidebar-header {
+    margin-bottom: 20px;
+}
+
+.sidebar-title {
+    margin: 0 0 8px 0;
+    font-size: 26px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.sidebar-subtitle {
+    margin: 0;
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+/* --- BUTTONS --- */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.controls button {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 400;
+    /* normal weight */
+    font-size: 15px;
+    transition: all 0.2s;
+}
+
+/* Start/Pause */
+.start-btn.starting {
+    background: #22c55e;
+    /* green */
+    color: #fff;
+}
+
+.start-btn.paused {
+    background: #ef4444;
+    /* red */
+    color: #fff;
+}
+
+.start-btn:hover {
+    opacity: 0.85;
+}
+
+/* Reset */
+.reset-btn {
+    background: #f3f4f6;
+    /* light bg */
+    color: #111827;
+    border: 1px solid #cbd5e1;
+}
+
+.reset-btn:hover {
+    background: #e5e7eb;
+}
+
+/* Brake */
+.brake-btn {
+    background: #f59e0b;
+    /* orange */
+    color: #111827;
+}
+
+.brake-btn:hover {
+    background: #d97706;
+}
+
+/* --- SCENARIOS --- */
+.scenario-list h3 {
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #94a3b8;
+}
+
+.scenario-btn {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #1f2937;
+    color: #e5e7eb;
+    cursor: pointer;
+    gap: 4px;
+    transition: all 0.2s;
+}
+
+.scenario-btn:hover {
+    background: #374151;
+}
+
+.scenario-btn.active {
+    background: #3b82f6;
+    /* blue */
+    border: 2px solid #2563eb;
+    color: #fff;
+}
+
+.scenario-name {
+    font-weight: 400;
+    /* normal */
+    font-size: 15px;
+}
+
+.scenario-desc {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+/* --- LIVE STATS --- */
+.live-stats h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 10px;
+}
+
+.stat-box {
+    background: #1e293b;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat-box div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stat-box strong {
+    font-weight: 400;
+    /* normal */
+}
+
+.stat-details {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid #334155;
+}
+
+/* Risk colors */
+.risk-low {
+    color: #10b981;
+}
+
+.risk-medium {
+    color: #facc15;
+    font-size: 16px;
+    /* slightly larger */
+}
+
+.risk-high {
+    color: #ef4444;
+    animation: blink 1s infinite;
+}
+
+/* --- FLASH ALERT --- */
+.flash-alert {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 68, 68, 0.12);
+    pointer-events: none;
+    z-index: 2200;
+}
+
+/* --- MAP AREA --- */
+.sim-map {
+    flex: 1;
+    position: relative;
+    background: #111827;
+}
+
+/* --- SCROLLBAR --- */
+.sim-sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sim-sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sim-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+/* --- COLLISION RISKS --- */
+.risk-list li {
+    background: rgba(255, 255, 255, 0.06);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+/* --- ANIMATION --- */
+@keyframes blink {
+
+    0%,
+    100% {
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    50% {
+        background: rgba(255, 0, 0, 0.2);
+    }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+    .sim-root {
+        flex-direction: column;
+    }
+
+    .sim-sidebar {
+        width: 100%;
+        height: 40vh;
+    }
+
+    .sim-map {
+        height: 60vh;
+    }
+}

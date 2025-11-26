@@ -1,0 +1,201 @@
+.collision-alert {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  max-width: 500px;
+  width: 90%;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Brake Alert Banner */
+.brake-alert-banner {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF4444 100%);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 8px 32px rgba(255, 68, 68, 0.4);
+  animation: pulse 1s infinite;
+  margin-bottom: 10px;
+}
+
+.alert-icon {
+  font-size: 24px;
+  animation: shake 0.5s infinite;
+}
+
+.alert-text {
+  font-weight: 700;
+  font-size: 16px;
+  flex: 1;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.alert-distance {
+  font-weight: 700;
+  font-size: 18px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 5px 12px;
+  border-radius: 8px;
+}
+
+/* Collision Warning */
+.collision-warning {
+  background: rgba(255, 68, 68, 0.95);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 12px 48px rgba(255, 68, 68, 0.5);
+  border: 3px solid #FF0000;
+}
+
+.high-risk .collision-warning {
+  animation: blink 0.5s infinite;
+}
+
+.warning-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 10px;
+}
+
+.warning-icon {
+  font-size: 28px;
+  animation: rotate 1s infinite;
+}
+
+.warning-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.warning-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+.label {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.value {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.value.danger {
+  color: #FFD700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.warning-action {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+/* Caution Warning */
+.caution-warning {
+  background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 32px rgba(255, 165, 0, 0.4);
+}
+
+.caution-icon {
+  font-size: 24px;
+}
+
+.caution-text {
+  font-weight: 600;
+  font-size: 15px;
+  flex: 1;
+}
+
+/* Animations */
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+    border-color: #FF0000;
+  }
+  50% {
+    opacity: 0.7;
+    border-color: #FF6B6B;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .collision-alert {
+    width: 95%;
+  }
+  
+  .warning-header h3 {
+    font-size: 16px;
+  }
+  
+  .detail-item {
+    font-size: 13px;
+  }
+}

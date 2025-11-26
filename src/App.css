@@ -1,0 +1,199 @@
+/* -----------------------------------------------------
+   GLOBAL RESET + ROOT
+----------------------------------------------------- */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background: #1e1e2e;
+  font-family: "Inter", system-ui, sans-serif;
+  color: white;
+}
+
+/* The main wrapper */
+.app {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* -----------------------------------------------------
+   HEADER
+----------------------------------------------------- */
+
+.app-header {
+  width: 100%;
+  padding: 20px 40px;
+  background: rgba(30, 30, 40, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.subtitle {
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+.vehicle-id {
+  font-size: 14px;
+}
+
+.vehicle-id strong {
+  color: #6ab8ff;
+}
+
+/* -----------------------------------------------------
+   NAVIGATION BAR
+----------------------------------------------------- */
+
+.app-nav {
+  width: 100%;
+  padding: 12px 30px;
+  background: rgba(40, 40, 55, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+.app-nav a {
+  color: #7aa2ff;
+  text-decoration: none;
+  font-weight: 500;
+  margin: 0 10px;
+}
+
+.app-nav a:hover {
+  color: #a3c4ff;
+}
+
+/* -----------------------------------------------------
+   MAIN CONTENT LAYOUT (MAP + SIDEBAR)
+----------------------------------------------------- */
+
+.app-content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 500px 650px;
+  padding: 20px;
+  gap: 20px;
+  width: 100%;
+  overflow: hidden;
+  height: calc(100vh - 180px);
+}
+
+
+/* -----------------------------------------------------
+   GPS STATUS BANNERS
+----------------------------------------------------- */
+
+.loading-banner,
+.error-banner {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border-radius: 10px;
+  z-index: 20;
+  font-weight: 600;
+}
+
+.loading-banner {
+  background: #3a3a5e;
+}
+
+.error-banner {
+  background: #ff3d3d;
+}
+
+.spinner {
+  width: 12px;
+  height: 12px;
+  border: 3px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* -----------------------------------------------------
+   FOOTER
+----------------------------------------------------- */
+
+.app-footer {
+  width: 100%;
+  padding: 15px 40px;
+  background: rgba(30, 30, 40, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 14px;
+}
+
+/* -----------------------------------------------------
+   RESPONSIVE FIXES
+----------------------------------------------------- */
+
+@media (max-width: 1024px) {
+  .app-content {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .map-container {
+    height: 420px;
+  }
+}
+
+@media (max-width: 600px) {
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .app-nav {
+    font-size: 15px;
+  }
+
+  .app-content {
+    padding: 10px;
+  }
+
+  .map-container {
+    height: 350px;
+  }
+}
