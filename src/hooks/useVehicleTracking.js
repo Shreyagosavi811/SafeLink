@@ -122,8 +122,8 @@ export function useVehicleTracking(vehicleId) {
             },
             {
                 enableHighAccuracy: true,
-                maximumAge: 0,
-                timeout: 5000
+                maximumAge: 2000, // Accept cached position up to 2s old (saves battery)
+                timeout: 10000
             }
         );
 
@@ -164,9 +164,16 @@ export function useVehiclesData() {
         // Subscribe to vehicles data
         onValue(vehiclesRef, (snapshot) => {
             const data = snapshot.val();
+            const now = Date.now();
+
+            // Throttle updates to max 5 times per second (200ms)
+            // This prevents the UI from freezing when many vehicles update simultaneously
+            if (window.lastVehicleUpdate && (now - window.lastVehicleUpdate) < 200) {
+                return;
+            }
+            window.lastVehicleUpdate = now;
 
             // Filter out stale vehicles (no update in 10 seconds)
-            const now = Date.now();
             const activeVehicles = {};
 
             if (data) {

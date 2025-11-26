@@ -6,8 +6,10 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import VehicleMap from './components/VehicleMap';
 import CollisionAlert from './components/CollisionAlert';
 import VehicleInfoPanel from './components/VehicleInfoPanel';
-import V2VPanel from './components/V2VPanel';
-import SimulatorPage from './pages/SimulatorPage';
+
+// Lazy load non-critical pages
+const V2VPanel = React.lazy(() => import('./components/V2VPanel'));
+const SimulatorPage = React.lazy(() => import('./pages/SimulatorPage'));
 
 // HOOKS
 import { useVehicleTracking, useVehiclesData } from './hooks/useVehicleTracking';
@@ -170,8 +172,17 @@ function AppMain() {
           }
         />
 
-        <Route path="/simulator" element={<SimulatorPage />} />
-        <Route path="/v2v" element={<V2VPanel vehicles={vehicles} currentId={vehicleId} />} />
+        <Route path="/simulator" element={
+          <React.Suspense fallback={<div className="loading-banner">Loading Simulator...</div>}>
+            <SimulatorPage />
+          </React.Suspense>
+        } />
+
+        <Route path="/v2v" element={
+          <React.Suspense fallback={<div className="loading-banner">Loading V2V Panel...</div>}>
+            <V2VPanel vehicles={vehicles} currentId={vehicleId} />
+          </React.Suspense>
+        } />
       </Routes>
 
       <footer className="app-footer">

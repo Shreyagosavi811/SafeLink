@@ -35,7 +35,32 @@ function RecenterMap({ position }) {
     return null;
 }
 
-export default function VehicleMap({ currentVehicle, vehicles, collisionRisks }) {
+// Memoized marker component to prevent re-rendering all markers when one moves
+const VehicleMarker = React.memo(({ id, vehicle, color }) => {
+    if (!vehicle || vehicle.lat == null || vehicle.lng == null) return null;
+
+    return (
+        <Marker
+            position={[vehicle.lat, vehicle.lng]}
+            icon={createVehicleIcon(color, vehicle.heading || 0)}
+        >
+            <Popup>
+                <div>
+                    <strong>{id}</strong><br />
+                    Speed: {vehicle.speed?.toFixed(1) || 0} km/h
+                </div>
+            </Popup>
+        </Marker>
+    );
+}, (prev, next) => {
+    // Custom comparison for performance
+    return prev.vehicle.lat === next.vehicle.lat &&
+        prev.vehicle.lng === next.vehicle.lng &&
+        prev.vehicle.heading === next.vehicle.heading &&
+        prev.color === next.color;
+});
+
+export default React.memo(function VehicleMap({ currentVehicle, vehicles, collisionRisks }) {
     const defaultCenter = [19.076, 72.8777];
     const mapCenter = currentVehicle?.position ? [currentVehicle.position.lat, currentVehicle.position.lng] : defaultCenter;
 
@@ -48,12 +73,15 @@ export default function VehicleMap({ currentVehicle, vehicles, collisionRisks })
     };
 
     // attach a small _radarRisk property to each vehicle for radar visualization (non-destructive)
-    const vehiclesForRadar = {};
-    Object.entries(vehicles || {}).forEach(([id, v]) => {
-        vehiclesForRadar[id] = { ...v };
-        const r = collisionRisks?.find(x => x.vehicleId === id);
-        if (r) vehiclesForRadar[id]._radarRisk = r.riskLevel;
-    });
+    const vehiclesForRadar = React.useMemo(() => {
+        const result = {};
+        Object.entries(vehicles || {}).forEach(([id, v]) => {
+            result[id] = { ...v };
+            const r = collisionRisks?.find(x => x.vehicleId === id);
+            if (r) result[id]._radarRisk = r.riskLevel;
+        });
+        return result;
+    }, [vehicles, collisionRisks]);
 
     return (
         <div style={{ height: '100%', width: '100%', position: 'relative' }}>
@@ -80,29 +108,19 @@ export default function VehicleMap({ currentVehicle, vehicles, collisionRisks })
                     </Marker>
                 )}
 
-                {/* Other vehicles */}
-                {Object.entries(vehicles || {}).map(([id, v]) => {
-                    if (v == null || v.lat == null || v.lng == null) return null;
-                    const color = getVehicleColor(id);
-                    return (
-                        <Marker
-                            key={id}
-                            position={[v.lat, v.lng]}
-                            icon={createVehicleIcon(color, v.heading || 0)}
-                        >
-                            <Popup>
-                                <div>
-                                    <strong>{id}</strong><br />
-                                    Speed: {v.speed?.toFixed(1) || 0} km/h
-                                </div>
-                            </Popup>
-                        </Marker>
-                    );
-                })}
+                {/* Other vehicles - using memoized component */}
+                {Object.entries(vehicles || {}).map(([id, v]) => (
+                    <VehicleMarker
+                        key={id}
+                        id={id}
+                        vehicle={v}
+                        color={getVehicleColor(id)}
+                    />
+                ))}
             </MapContainer>
 
             {/* Radar overlay sits on top of map */}
             <RadarOverlay currentVehicle={currentVehicle} vehicles={vehiclesForRadar} rangeMeters={400} />
         </div>
     );
-}
+});
