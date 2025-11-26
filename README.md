@@ -27,7 +27,7 @@ A lightweight vehicle-to-vehicle (V2V) communication system that provides real-t
 
 1. **Clone or navigate to the project**
    ```bash
-   cd v2v-safenet
+   cd SafeLink
    ```
 
 2. **Install dependencies**
